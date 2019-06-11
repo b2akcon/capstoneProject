@@ -1,0 +1,133 @@
+package com.capstone.ajax.servlet;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONObject;
+
+import com.capstone.database.Jdbc;
+import com.capstone.vo.AppBoardVO;
+import com.capstone.vo.CalculateVO;
+
+/**
+ * Servlet implementation class yearSelectList
+ */
+@WebServlet("/yearSelectList")
+public class yearSelectList extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    public yearSelectList() {
+        super();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs;
+		
+		try {
+			Jdbc jdbc = new Jdbc();
+			conn = jdbc.getConn();
+			
+			String year = request.getParameter("year");
+			String semester = request.getParameter("semester");
+			String board = request.getParameter("board");
+			
+			String SQL = "SELECT * FROM app_board where year = ? and semester = ? ORDER BY year Desc;";
+			
+			int boardCheck = 0;
+			if(board != null) {
+				if("rs".equals(board)) {
+					SQL = "SELECT * FROM rs_board where year = ? and semester = ? ORDER BY year Desc;";
+				}else if ("calculate".equals(board)) {
+					boardCheck = 1;
+					SQL = "SELECT * FROM calculate_board where year = ? and semester = ? ORDER BY year Desc;";
+				}else if ("survey".equals(board)) {
+					boardCheck = 1;
+					SQL =	"SELECT * FROM survey_board where year = ? and semester = ? ORDER BY year Desc;";
+				}
+			}
+		
+
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, year);
+			pstmt.setString(2, semester);
+			
+			
+			rs = pstmt.executeQuery();
+			
+			List<AppBoardVO> list = new ArrayList<AppBoardVO>();
+			List<CalculateVO> list2 = new ArrayList<CalculateVO>();
+			
+			if(boardCheck == 0) {
+				while (rs.next()) {
+					AppBoardVO vo = new AppBoardVO();
+					
+					vo.setNo(rs.getInt(1));
+					vo.setName(rs.getString(2));
+					vo.setTasktype(rs.getString(3));
+					vo.setTaskname(rs.getString(4));
+					vo.setTeamname(rs.getString(5));
+					vo.setMoney(rs.getString(6));
+					vo.setYear(rs.getString(7));
+					vo.setSemester(rs.getString(8));
+					vo.setApproval(rs.getString(9));
+					list.add(vo);
+				}
+			}else if (boardCheck == 1) {
+				while (rs.next()) {
+					CalculateVO vo = new CalculateVO();
+					
+					vo.setNo(rs.getInt(1));
+					vo.setYear(rs.getString(2));
+					vo.setSemester(rs.getString(3));
+					vo.setName(rs.getString(4));
+					vo.setTitle(rs.getString(5));
+					vo.setContent(rs.getString(6));
+					vo.setApproval(rs.getString(7));
+					list2.add(vo);
+				}
+			}
+
+			
+			JSONObject obj = new JSONObject();
+			if(boardCheck == 0) {
+				obj.put("list", list);
+			}else if (boardCheck == 1) {
+				obj.put("list", list2);
+			}
+			
+			response.setContentType("application/x-json; charset=UTF-8");
+			response.getWriter().print(obj);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+}
