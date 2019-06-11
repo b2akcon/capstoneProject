@@ -1,0 +1,73 @@
+package com.capstone.ajax.servlet;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import com.capstone.database.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class approval
+ */
+@WebServlet("/approval")
+public class approval extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			Jdbc jdbc = new Jdbc();
+			conn = jdbc.getConn();
+			
+			String approval = request.getParameter("approval");
+			String board = request.getParameter("board");
+			String no = request.getParameter("no");
+			String SQL = "UPDATE app_board set approval = ? where no = ?";
+			
+			
+			if(board != null) {
+				if("rs".equals(board)) {
+					SQL = "UPDATE rs_board set approval = ? where no = ?";
+				}else if ("calculate".equals(board)) {
+					SQL = "UPDATE calculate_board set approval = ? where no = ?";
+				}else if ("survey".equals(board)) {
+					SQL = "UPDATE survey_board set approval = ? where no = ?";
+				}
+			}
+		
+
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, approval);
+			pstmt.setString(2, no);
+			result = pstmt.executeUpdate();
+			System.out.println("승인/취소 업데이트 완료");
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			System.out.println("승인/취소 업데이트 실패");
+		}finally {
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+}
