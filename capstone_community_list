@@ -1,0 +1,110 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@include file="template/capstone_session.jsp"%>
+    <%@ page import="com.capstone.database.*"%>
+    <%@ page import="java.util.*"%>
+    <%@ page import="com.capstone.vo.*"%>
+    <%
+		request.setCharacterEncoding("UTF-8"); 
+		String board= request.getParameter("board");
+    	JdbcCommunity jdbc = new JdbcCommunity();
+        	List<CommunityVO> list = new ArrayList<CommunityVO>();
+        	String id = (String) session.getAttribute("name");
+        	String role = (String) session.getAttribute("role"); 
+        	
+    		list = jdbc.getSelectBoard(board);
+    %>
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>선문대학교 캡스톤디자인</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<link rel="stylesheet" href="css/skel.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/applist.css" />
+
+	</head>
+	<body class="left-sidebar">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+
+		<!-- navigation -->
+		<%@include file="template/capstone_header.jsp"%>
+
+		<!-- Main -->
+			<div id="main" class="wrapper style1">
+				<div class="container">
+					<div class="row">
+					
+						<!-- Sidebar -->
+							<%@include file="template/capstone_sidebar3.jsp"%>
+						
+						<!-- Content -->
+						<div id="content" class="8u skel-cell-important">
+							<section>
+								<header class="major">
+								<h2>
+									<%
+										if("notice".equals(board)){
+											out.print("공지사항");
+										}else if("document".equals(board)){
+											out.print("양식 서류");
+										}else if("faq".equals(board)){
+											out.print("FAQ");
+										}
+									%>
+								</h2>
+								</header>
+
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>번호</th>
+											<th colspan="4">제목</th>
+											<th>작성자</th>
+											<th>날짜</th>
+										</tr>
+									</thead>
+									<tbody>
+									<%	int index = 0;
+										for(CommunityVO vo : list){
+											index++;	%>
+										<tr onclick="listlink(<%= vo.getNo()%>);" style="cursor:pointer;">
+											<td><%=index %></td>
+											<td colspan="4"><%=vo.getTitle() %></td>
+											<td><%=vo.getName() %></td>
+											<td><%=vo.getddate() %></td>
+										</tr>
+									<%} %>
+									</tbody>
+								</table>
+								<hr/>
+								<% role = (String) session.getAttribute("role"); 
+									if("1".equals(role)){
+								%>
+								<a href="capstone_community_write.jsp?board=<%=board%>" class="btn btn-default pull-right" id="writing">글쓰기</a>
+								<%} %>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		<!-- Footer -->
+			<%@include file="template/capstone_footer.jsp"%>
+	</body>
+	<script type="text/javascript">
+	function listlink(data){
+		location.href='capstone_community_read.jsp?no='+data+'&board=<%=board%>';
+	}
+	</script>
+</html>
