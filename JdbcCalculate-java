@@ -1,0 +1,401 @@
+package com.capstone.database;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.capstone.vo.AppBoardVO;
+import com.capstone.vo.CalculateFileVO;
+import com.capstone.vo.CalculateVO;
+
+public class JdbcCalculate {
+	private Connection conn; // connection:db에접근하게 해주는 객체
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+	
+	public JdbcCalculate() {
+		try {
+			String dbURL = "jdbc:mysql://localhost:3306/capstone?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&mysqlEncoding=utf8"; // localhost:3306 포트는 컴퓨터설치된 mysql주소
+			String dbID = "yong";
+			String dbPassword = "yong";
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
+		} catch (Exception e) {
+			e.printStackTrace(); // 오류가 무엇인지 출력
+		}
+	}
+	
+	
+	//list 교수 페이지 가져오기
+	public List<CalculateVO> getCalculateBoardT(String id){ 
+		
+		String SQL = "SELECT * FROM calculate_board where year = ? and semester = ?";
+		List<CalculateVO> list = new ArrayList<CalculateVO>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,"2019");
+			pstmt.setString(2,"1");
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				CalculateVO vo = new CalculateVO();
+				
+				vo.setNo(rs.getInt(1));
+				vo.setYear(rs.getString(2));
+				vo.setSemester(rs.getString(3));
+				vo.setName(rs.getString(4));
+				vo.setTitle(rs.getString(5));
+				vo.setContent(rs.getString(6));
+				vo.setApproval(rs.getString(7));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list; 
+	}
+	
+	
+	//list 학생 페이지 가져오기
+	public List<CalculateVO> getCalculateBoardS(String id){ 
+		
+		String SQL = "SELECT * FROM calculate_board where name = ?";
+		List<CalculateVO> list = new ArrayList<CalculateVO>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,id);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				CalculateVO vo = new CalculateVO();
+				
+				vo.setNo(rs.getInt(1));
+				vo.setYear(rs.getString(2));
+				vo.setSemester(rs.getString(3));
+				vo.setName(rs.getString(4));
+				vo.setTitle(rs.getString(5));
+				vo.setContent(rs.getString(6));
+				vo.setApproval(rs.getString(7));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list; 
+	}
+	
+	//list 교수 페이지 가져오기
+	public List<CalculateVO> getSurveyBoardT(String id){ 
+		
+		String SQL = "SELECT * FROM survey_board where year = ? and semester = ?";
+		List<CalculateVO> list = new ArrayList<CalculateVO>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,"2019");
+			pstmt.setString(2,"1");
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				CalculateVO vo = new CalculateVO();
+				
+				vo.setNo(rs.getInt(1));
+				vo.setYear(rs.getString(2));
+				vo.setSemester(rs.getString(3));
+				vo.setName(rs.getString(4));
+				vo.setTitle(rs.getString(5));
+				vo.setContent(rs.getString(6));
+				vo.setApproval(rs.getString(7));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list; 
+	}
+	
+	
+	//list 학생 페이지 가져오기
+	public List<CalculateVO> getSurveyBoardS(String id){ 
+		
+		String SQL = "SELECT * FROM survey_board where name = ?";
+		List<CalculateVO> list = new ArrayList<CalculateVO>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,id);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				CalculateVO vo = new CalculateVO();
+				
+				vo.setNo(rs.getInt(1));
+				vo.setYear(rs.getString(2));
+				vo.setSemester(rs.getString(3));
+				vo.setName(rs.getString(4));
+				vo.setTitle(rs.getString(5));
+				vo.setContent(rs.getString(6));
+				vo.setApproval(rs.getString(7));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list; 
+	}
+	
+	
+	public CalculateVO getSelectCalculateVO(String no){
+		String SQL = "SELECT * FROM calculate_board where no = ?";
+		CalculateVO vo = new CalculateVO();
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				vo.setNo(rs.getInt(1));
+				vo.setYear(rs.getString(2));
+				vo.setSemester(rs.getString(3));
+				vo.setName(rs.getString(4));
+				vo.setTitle(rs.getString(5));
+				vo.setContent(rs.getString(6));
+				vo.setApproval(rs.getString(7));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
+	
+	
+	public CalculateVO getSelectSurveyVO(String no){
+		String SQL = "SELECT * FROM survey_board where no = ?";
+		CalculateVO vo = new CalculateVO();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				vo.setNo(rs.getInt(1));
+				vo.setYear(rs.getString(2));
+				vo.setSemester(rs.getString(3));
+				vo.setName(rs.getString(4));
+				vo.setTitle(rs.getString(5));
+				vo.setContent(rs.getString(6));
+				vo.setApproval(rs.getString(7));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
+	
+	//CalculateBoard Insert
+	public int inserCalculateBoard(CalculateVO vo){
+		String SQL = "INSERT INTO calculate_board VALUES ((Select max(no+1) from calculate_board a),?, ? , ?, ?, ?, 0 );";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, vo.getYear());
+			pstmt.setString(2, vo.getSemester());
+			pstmt.setString(3, vo.getName());
+			pstmt.setString(4, vo.getTitle());
+			pstmt.setString(5, vo.getContent());
+			int result = pstmt.executeUpdate();
+			System.out.println("CalculateBoard인설트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	//CalculateBoard Insert
+	public int deleteCalculateBoard(String no){
+		String SQL = "delete from calculate_board where no = "+ no+" ;";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("calculateBoard 딜리트");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	//CalculateBoard Insert
+	public int deleteSurveyBoard(String no){
+		String SQL = "delete from survey_board where no ="+no+" ;";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("surveyBoard 딜리트");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	
+	//CalculateBoard Insert
+	public int deleteCalculateBoardFile(String no){
+		String SQL = "delete from calculate_board_file where boardno ="+no+" ;";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("calculateBoardFile 딜리트");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	//CalculateBoard Insert
+	public int deleteSurveyBoardFile(String no){
+		String SQL = "delete from survey_board_file where boardno ="+no+" ;";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("calculateBoardFile 딜리트");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	//sIRVEYBoard Insert
+	public int inserSurveyBoard(CalculateVO vo){
+		String SQL = "INSERT INTO survey_board VALUES ((Select max(no+1) from survey_board a),?, ? , ?, ?, ?, 0 );";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, vo.getYear());
+			pstmt.setString(2, vo.getSemester());
+			pstmt.setString(3, vo.getName());
+			pstmt.setString(4, vo.getTitle());
+			pstmt.setString(5, vo.getContent());
+			int result = pstmt.executeUpdate();
+			System.out.println("surveyBoard인설트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	public int insertCalculateBoardFile(CalculateFileVO vo){
+		String SQL = "insert INTO calculate_board_file values((select max(no+1) from calculate_board_file a),?,?,(Select max(no) from calculate_board));";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,vo.getName());
+			pstmt.setString(2,vo.getFile());
+			
+			int result = pstmt.executeUpdate();
+			System.out.println("file 인설트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+	
+	
+	public int insertSurveyBoardFile(CalculateFileVO vo){
+		String SQL = "insert INTO survey_board_file values((select max(no+1) from survey_board_file a),?,?,(Select max(no) from survey_board));";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,vo.getName());
+			pstmt.setString(2,vo.getFile());
+			
+			int result = pstmt.executeUpdate();
+			System.out.println("file 인설트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+	
+	public List<String> getSelectFileDownloadCalculate(String no,String filenumber){
+		String SQL = "select * from calculate_board_file where boardno = ? and  name LIKE ? ORDER BY name ASC;";
+		List<String> list = new ArrayList<String>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			pstmt.setString(2,filenumber+"%");
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				String vo = new String();
+				vo = rs.getString(3);
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<String> getSelectFileDownloadSurvey(String no){
+		String SQL = "select * from survey_board_file where boardno = ? ORDER BY name ASC;";
+		List<String> list = new ArrayList<String>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				String vo = new String();
+				vo = rs.getString(3);
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	
+	
+}
