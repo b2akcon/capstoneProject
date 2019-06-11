@@ -1,0 +1,71 @@
+package com.capstone.vo;
+
+public class AppBoardCompanyVO {
+	int no;
+	String type;
+	String company;
+	String ceo;
+	String license;
+	String Business;
+	String postcode;
+	String address;
+	int boardno;
+	
+	
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
+	public String getCeo() {
+		return ceo;
+	}
+	public void setCeo(String ceo) {
+		this.ceo = ceo;
+	}
+	public String getLicense() {
+		return license;
+	}
+	public void setLicense(String license) {
+		this.license = license;
+	}
+	public String getBusiness() {
+		return Business;
+	}
+	public void setBusiness(String business) {
+		Business = business;
+	}
+	public String getPostcode() {
+		return postcode;
+	}
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public int getBoardno() {
+		return boardno;
+	}
+	public void setBoardno(int boardno) {
+		this.boardno = boardno;
+	}
+	
+	
+}
