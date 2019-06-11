@@ -1,0 +1,91 @@
+package com.capstone.ajax.servlet;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.capstone.database.Jdbc;
+import com.capstone.database.JdbcCalculate;
+import com.capstone.database.JdbcCommunity;
+
+@WebServlet("/delete")
+public class delete extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	public delete() {
+        super();
+    }
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			Jdbc jdbc = new Jdbc();
+			JdbcCalculate jdbc1 = new JdbcCalculate();
+			JdbcCommunity jdbc2 = new JdbcCommunity();
+			
+			conn = jdbc.getConn();
+			
+			String board = request.getParameter("board");
+			String no = request.getParameter("no");
+			String SQL = null;
+			
+			
+			if(board != null) {
+				if("rs".equals(board)) {
+					jdbc.deleteRsBoardCompany(no);
+					jdbc.deleteRsBoardFile(no);
+					jdbc.deleteRsBoardTeam(no);
+					SQL = "delete from "+board+"_board where no = "+no;
+					pstmt = conn.prepareStatement(SQL);
+					result = pstmt.executeUpdate();
+				}else if ("calculate".equals(board)) {
+					jdbc1.deleteCalculateBoard(no);
+					jdbc1.deleteCalculateBoardFile(no);
+				}else if ("survey".equals(board)) {
+					jdbc1.deleteSurveyBoard(no);
+					jdbc1.deleteSurveyBoardFile(no);
+				}else if ("app".equals(board)) {
+					jdbc.deleteAppBoardCompany(no);
+					jdbc.deleteAppBoardFile(no);
+					jdbc.deleteAppBoardTeam(no);
+					SQL = "delete from "+board+"_board where no = "+no;
+					pstmt = conn.prepareStatement(SQL);
+					result = pstmt.executeUpdate();
+				}else{
+					jdbc2.deleteCommunityBoard(no, board);
+					jdbc2.deleteSurveyBoardFile(no, board);
+				}
+			}
+
+			System.out.println("삭제완료");
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			System.out.println("삭제 실패");
+		}finally {
+		    String redirectUrl = "capstone_main.jsp"; // 인증 실패시 요청 될 url 
+		    response.sendRedirect(redirectUrl);
+			
+		}
+	}
+	
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
