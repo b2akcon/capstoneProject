@@ -1,0 +1,194 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="com.capstone.database.Jdbc" %> 
+<%@ page import="com.capstone.vo.*" %> 
+<%@ page import="java.io.PrintWriter" %>
+
+<%
+	if(session.getAttribute("id") == null) {
+			request.setCharacterEncoding("UTF-8"); 
+			String id= request.getParameter("id");
+			String pw = request.getParameter("pw");
+		
+		UserVO userVo = new UserVO();
+		userVo.setId(id);
+		userVo.setPw(pw);
+
+%>
+
+<%
+		Jdbc jdbc = new Jdbc(); //인스턴스생성
+		int result = jdbc.login(userVo.getId(), userVo.getPw());
+	    String name = jdbc.getName();
+	    String role = jdbc.getRole();
+		// 사용자 인증
+	    String redirectUrl = "capstone_login.jsp"; // 인증 실패시 요청 될 url 
+
+	    
+		//로그인 성공
+		if(result == 1){
+			System.out.println("로그인성공");
+			session.setAttribute("id",id);
+			session.setAttribute("pw",pw);
+			session.setAttribute("name",name);
+			session.setAttribute("role",role);
+		}
+
+		//로그인 실패
+		else if(result == 0){
+			System.out.println("비밀번호 틀림");
+			response.sendRedirect(redirectUrl);
+		}
+
+		//아이디 없음
+		else if(result == -1){
+			System.out.println("아이디없음");
+			response.sendRedirect(redirectUrl);
+		}
+
+		//DB오류
+		else if(result == -2){
+			System.out.println("DB오류");
+			response.sendRedirect(redirectUrl);
+		}	
+	}
+	%>
+
+
+
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>선문대학교 캡스톤디자인</title>
+
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<link rel="stylesheet" href="css/skel.css" />
+		<link rel="stylesheet" href="css/style.css" />
+
+		<style>
+					.navbar {
+				background-color: #222833;
+			}
+
+			#menu-title {
+				font-size: 110%;
+			}
+
+			.list {
+				font-weight: bolder;
+			}
+
+			#img {
+				width: 100px;
+				height: 23px;
+				margin: 14px;
+			}
+			#login_name {
+				color: white;
+				margin: 14px;
+				height: 23px;
+			}
+			#login_button {
+				background-color: #3ac984;
+				color: white;
+				font-weight: bolder;
+				border: 0;
+				padding: 13px;
+				border-radius: 24px;
+				float:right;
+			}
+		
+		</style>
+	</head>
+	<body class="homepage">
+		<!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+		<script src="js/bootstrap.min.js"></script>
+
+		<!-- navigation -->
+		<div class="navbar navbar-inverse navbar-fixed-top" id="menubar">
+			<div class="container" id="img_div">
+				<div class="navbar-header">
+					<a href="capstone_main.jsp"><img src="images/s2.png" id="img"></a>
+				</div>
+				<div class="collapse navbar-collapse">
+						<label id="login_name" style="float:right; font-weight: 600; color:white; margin: 14px;height: 23px;">
+							<%= session.getAttribute("name") %>님 안녕하세요.
+						</label>
+						<button id="login_button" onclick="location.href='logout.jsp';">로그아웃</button>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Header -->
+						<div id="header">
+				<div class="container">
+						
+					<!-- Logo -->
+					<h1>캡스톤디자인</h1>
+					
+					<!-- Nav -->
+					<nav id="nav">
+					<ul>
+						<li>
+							<a href="capstone_intro.jsp" class="list">소개</a>
+							<ul>
+								<li><a href="capstone_intro.jsp">캡스톤디자인 소개</a></li>
+								<li><a href="capstone_intro_global.jsp">글로벌캡스톤디자인 소개</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="capstone_app_list.jsp" class="list">신청 및 수행이력</a>
+							<ul>
+								<li><a href="capstone_app_list.jsp">지원신청서 및 계획서</a></li>
+								<li><a href="capstone_rs_list.jsp">결과보고서 및 수행결과(사진)</a></li>										
+								<li><a href="capstone_calculate_list.jsp">정산보고서</a></li>
+								<li><a href="capstone_survey_list.jsp">설문조사</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="capstone_community_list.jsp?board=notice" class="list">커뮤니티</a>
+							<ul>
+								<li><a href="capstone_community_list.jsp?board=notice">공지사항</a></li>
+								<li><a href="capstone_community_list.jsp?board=document">양식 서류</a></li>
+								<li><a href="capstone_community_list.jsp?board=faq">FAQ</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+
+
+					<!-- Banner -->
+						<div id="banner">
+							<div class="container">
+								<section>
+									<header class="major">
+										<h2>Enjoy your Capston design</h2>
+										<span class="byline">당신의 평생기술로 도약하는 캡스톤 디자인</span>
+									</header>
+									<div onclick="location.href='capstone_main.jsp'"  class="button alt">메인페이지</div>
+								</section>			
+							</div>
+						</div>
+
+				</div>
+			</div>
+
+		
+
+		<!-- Footer -->
+			<%@include file="template/capstone_footer.jsp"%>
+
+	</body>
+</html>
