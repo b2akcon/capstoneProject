@@ -1,0 +1,118 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.capstone.database.Jdbc" %> 
+<%@ page import="com.capstone.vo.*" %>
+<%@page import="java.io.File"%>
+<%@page import="java.util.*"%>
+<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
+<%@page import="com.oreilly.servlet.MultipartRequest"%>
+
+<!-- 파일 업로드-->
+<%
+
+		String saveDir = application.getRealPath("/uploadFileRs/");
+		int maxSize = 1024*1024*100;
+		String encType = "UTF-8";
+		MultipartRequest multipartRequest
+		= new MultipartRequest(request, saveDir, maxSize, encType, new DefaultFileRenamePolicy());
+
+		try{
+		
+		//board 
+		String id = multipartRequest.getParameter("id");
+		String tasktype = multipartRequest.getParameter("tasktype");
+		String taskname = multipartRequest.getParameter("taskname");
+		String teamname = multipartRequest.getParameter("teamname");
+		String money = multipartRequest.getParameter("money");
+		String year = multipartRequest.getParameter("year");
+		String semester = multipartRequest.getParameter("semester");
+		
+		AppBoardVO vo = new AppBoardVO();
+		vo.setName(id);
+		vo.setTasktype(tasktype);
+		vo.setTaskname(taskname);
+		vo.setTeamname(teamname);
+		vo.setMoney(money);
+		vo.setYear(year);
+		vo.setSemester(semester);
+		
+		Jdbc jdbc = new Jdbc();
+		jdbc.insertRsBoard(vo);
+		
+		//team
+		String[] department = multipartRequest.getParameterValues("department");
+		String[] classid = multipartRequest.getParameterValues("classid");
+		String[] grade = multipartRequest.getParameterValues("grade");
+		String[] name = multipartRequest.getParameterValues("name");
+		String[] phone = multipartRequest.getParameterValues("phone");
+		String[] email = multipartRequest.getParameterValues("email");
+		
+		
+		
+		for(int i=0;i<name.length;i++){
+			AppBoardTeamVO teamvo = new AppBoardTeamVO();
+			department[i] = department[i];
+			classid[i] = classid[i];
+			grade[i] = grade[i];
+			name[i] = name[i];
+			phone[i] = phone[i];
+			email[i] = email[i];
+			
+			teamvo.setDepartment(department[i]);
+			teamvo.setClassid(classid[i]);
+			teamvo.setGrade(grade[i]);
+			teamvo.setName(name[i]);
+			teamvo.setPhone(phone[i]);
+			teamvo.setEmail(email[i]);
+			jdbc.insertRsBoardTeam(teamvo);
+		}
+
+		
+		//company
+		String type = multipartRequest.getParameter("type");
+		String company = multipartRequest.getParameter("company");
+		String ceo = multipartRequest.getParameter("ceo");
+		String license = multipartRequest.getParameter("license");
+		String business = multipartRequest.getParameter("Business");
+		String postcode = multipartRequest.getParameter("postcode");
+		String address = multipartRequest.getParameter("address");
+	
+		AppBoardCompanyVO companyVo = new AppBoardCompanyVO();
+		companyVo.setType(type);
+		companyVo.setCompany(company);
+		companyVo.setCeo(ceo);
+		companyVo.setLicense(license);
+		companyVo.setBusiness(business);
+		companyVo.setPostcode(postcode);
+		companyVo.setAddress(address);
+		
+		jdbc.insertRsBoardCompany(companyVo);
+		
+
+		Enumeration<String> files = multipartRequest.getFileNames();
+		ArrayList saveFiles = new ArrayList();
+		ArrayList origFiles = new ArrayList();
+		while(files.hasMoreElements()){
+		      String filename = files.nextElement();
+				if(multipartRequest.getFilesystemName(filename) == null) continue;
+		      saveFiles.add(multipartRequest.getFilesystemName(filename));
+		      origFiles.add(multipartRequest.getOriginalFileName(filename));
+		      jdbc.insertRsBoardFile(multipartRequest.getFilesystemName(filename));
+		      System.out.println(multipartRequest.getFile(filename));
+		}
+		
+		out.println("<script>"); 
+		out.println("alert('저장 완료')"); 
+		out.println("location.href='capstone_rs_list.jsp'"); 
+		out.println("</script>");
+	
+	}catch(Exception e){
+		e.printStackTrace();
+		
+		out.println("<script>"); 
+		out.println("alert('데이터베이스 입력 실패')"); 
+		out.println("history.back()"); 
+		out.println("</script>");
+
+	}	
+%>
+		
