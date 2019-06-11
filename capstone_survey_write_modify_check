@@ -1,0 +1,75 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.capstone.database.*" %> 
+<%@ page import="com.capstone.vo.*" %>
+<%@page import="java.io.File"%>
+<%@page import="java.util.*"%>
+<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
+<%@page import="com.oreilly.servlet.MultipartRequest"%>
+
+<!-- 파일업로드-->
+<%
+
+		String saveDir = application.getRealPath("/uploadFileSurvey/");
+		int maxSize = 1024*1024*100;
+		String encType = "UTF-8";
+		MultipartRequest multipartRequest
+		= new MultipartRequest(request, saveDir, maxSize, encType, new DefaultFileRenamePolicy());
+
+		try{
+		
+		//board 
+		String id = multipartRequest.getParameter("id");
+		String year = multipartRequest.getParameter("year");
+		String semester = multipartRequest.getParameter("semester");
+		String title = multipartRequest.getParameter("title");
+		String content = multipartRequest.getParameter("content");
+		String no = multipartRequest.getParameter("no");
+		
+		CalculateVO vo = new CalculateVO();
+		vo.setName(id);
+		vo.setYear(year);
+		vo.setSemester(semester);
+		vo.setTitle(title);
+		vo.setContent(content);
+		
+		JdbcCalculate jdbc = new JdbcCalculate();
+		
+		jdbc.deleteSurveyBoard(no);
+		jdbc.deleteSurveyBoardFile(no);
+		
+		jdbc.inserSurveyBoard(vo);
+				
+
+ 		Enumeration<String> files = multipartRequest.getFileNames();
+		ArrayList saveFiles = new ArrayList();
+		ArrayList origFiles = new ArrayList();
+		while(files.hasMoreElements()){
+		      String filename = files.nextElement();
+				if(multipartRequest.getFilesystemName(filename) == null) continue;
+				
+				CalculateFileVO filevo = new CalculateFileVO();
+				
+		      saveFiles.add(multipartRequest.getFilesystemName(filename));
+		      origFiles.add(multipartRequest.getOriginalFileName(filename));
+		      filevo.setName(filename);
+		      filevo.setFile(multipartRequest.getFilesystemName(filename));
+		      jdbc.insertSurveyBoardFile(filevo);
+		      System.out.println(multipartRequest.getFile(filename));
+		}
+		 
+		out.println("<script>"); 
+		out.println("alert('저장 완료')"); 
+		out.println("location.href='capstone_survey_list.jsp'"); 
+		out.println("</script>");
+	
+	}catch(Exception e){
+		e.printStackTrace();
+		
+		out.println("<script>"); 
+		out.println("alert('데이터베이스 입력 실패')"); 
+		out.println("history.back()"); 
+		out.println("</script>");
+
+	}	
+%>
+		
