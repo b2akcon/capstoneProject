@@ -1,0 +1,29 @@
+package com.capstone.vo;
+
+public class CommunityFileVO {
+	private int no;
+	private String file;
+	private int boardno;
+	
+	
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
+	}
+	public String getFile() {
+		return file;
+	}
+	public void setFile(String file) {
+		this.file = file;
+	}
+	public int getBoardno() {
+		return boardno;
+	}
+	public void setBoardno(int boardno) {
+		this.boardno = boardno;
+	}
+	
+	
+}
