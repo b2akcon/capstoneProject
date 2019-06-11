@@ -1,0 +1,810 @@
+package com.capstone.database;
+
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+
+import java.sql.PreparedStatement;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.capstone.vo.*;
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
+
+
+
+public class Jdbc {
+
+	// 실질적으로 db에서 회원정보 불러오거나 db에 회원정보 넣을때
+
+
+
+	private Connection conn; // connection:db에접근하게 해주는 객체
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+	private String name;
+	private String role;
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public Connection getConn() {
+		return conn;
+	}
+
+	public void setConn(Connection conn) {
+		this.conn = conn;
+	}
+
+	// mysql에 접속해 주는 부분
+	public Jdbc() { //생성자 실행될때마다 자동으로 db연결이 이루어 질 수 있도록함
+		try {
+			String dbURL = "jdbc:mysql://localhost:3306/capstone?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&mysqlEncoding=utf8"; // localhost:3306 포트는 컴퓨터설치된 mysql주소
+			String dbID = "yong";
+			String dbPassword = "yong";
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
+		} catch (Exception e) {
+			e.printStackTrace(); // 오류가 무엇인지 출력
+		}
+	}
+
+
+
+	// 로그인을 시도하는 함수****
+	public int login(String userID, String userPassword) {
+		String SQL = "SELECT pw,name,role FROM user WHERE id = ?";
+		try {
+			// pstmt : prepared statement 정해진 sql문장을 db에 삽입하는 형식으로 인스턴스가져옴
+			pstmt = conn.prepareStatement(SQL);
+			// sql인젝션 같은 해킹기법을 방어하는것... pstmt을 이용해 하나의 문장을 미리 준비해서(물음표사용)
+			// 물음표해당하는 내용을 유저아이디로, 매개변수로 이용.. 1)존재하는지 2)비밀번호무엇인지
+			pstmt.setString(1, userID);
+			// rs:result set 에 결과보관
+			rs = pstmt.executeQuery();
+			// 결과가 존재한다면 실행
+			if (rs.next()) {
+				// 패스워드 일치한다면 실행
+				if (rs.getString(1).equals(userPassword)) {
+					setName(rs.getString(2));
+					setRole(rs.getString(3));
+					return 1; // 로긴 성공
+				} else
+					return 0; // 비밀번호 불일치
+			}
+			return -1; // 아이디가 없음 오류
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -2; // 데이터베이스 오류를 의미
+	}
+	
+	
+	
+	
+	
+	
+	//Applist 학생 페이지 가져오기
+	public List<AppBoardVO> getList(String id){ 
+
+		String SQL = "SELECT * FROM app_board where name = ?";
+		List<AppBoardVO> list = new ArrayList<AppBoardVO>();
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,id);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				AppBoardVO vo = new AppBoardVO();
+				
+				//map.put(rs.getColumnName(1), rs.getString(1));
+				
+				vo.setNo(rs.getInt(1));
+				vo.setName(rs.getString(2));
+				vo.setTasktype(rs.getString(3));
+				vo.setTaskname(rs.getString(4));
+				vo.setTeamname(rs.getString(5));
+				vo.setMoney(rs.getString(6));
+				vo.setYear(rs.getString(7));
+				vo.setSemester(rs.getString(8));
+				vo.setApproval(rs.getString(9));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list; 
+	}
+	
+	//Applist 교수 페이지 가져오기
+	public List<AppBoardVO> getListTeacher(String id){ 
+
+		String SQL = "SELECT * FROM app_board where year = ? and semester = ?";
+		List<AppBoardVO> list = new ArrayList<AppBoardVO>();
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,"2019");
+			pstmt.setString(2,"1");
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				AppBoardVO vo = new AppBoardVO();
+				
+				//map.put(rs.getColumnName(1), rs.getString(1));
+				
+				vo.setNo(rs.getInt(1));
+				vo.setName(rs.getString(2));
+				vo.setTasktype(rs.getString(3));
+				vo.setTaskname(rs.getString(4));
+				vo.setTeamname(rs.getString(5));
+				vo.setMoney(rs.getString(6));
+				vo.setYear(rs.getString(7));
+				vo.setSemester(rs.getString(8));
+				vo.setApproval(rs.getString(9));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list; 
+	}
+	
+	
+	//Rslist 학생 페이지 가져오기
+	public List<AppBoardVO> getListRs(String id){ 
+		
+		String SQL = "SELECT * FROM rs_board where name = ?";
+		List<AppBoardVO> list = new ArrayList<AppBoardVO>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,id);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				AppBoardVO vo = new AppBoardVO();
+				
+				//map.put(rs.getColumnName(1), rs.getString(1));
+				
+				vo.setNo(rs.getInt(1));
+				vo.setName(rs.getString(2));
+				vo.setTasktype(rs.getString(3));
+				vo.setTaskname(rs.getString(4));
+				vo.setTeamname(rs.getString(5));
+				vo.setMoney(rs.getString(6));
+				vo.setYear(rs.getString(7));
+				vo.setSemester(rs.getString(8));
+				vo.setApproval(rs.getString(9));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list; 
+	}
+	
+	//Rslist 교수 페이지 가져오기
+	public List<AppBoardVO> getListTeacherRs(String id){ 
+		
+		String SQL = "SELECT * FROM rs_board where year = ? and semester = ?";
+		List<AppBoardVO> list = new ArrayList<AppBoardVO>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,"2019");
+			pstmt.setString(2,"1");
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				AppBoardVO vo = new AppBoardVO();
+				
+				//map.put(rs.getColumnName(1), rs.getString(1));
+				
+				vo.setNo(rs.getInt(1));
+				vo.setName(rs.getString(2));
+				vo.setTasktype(rs.getString(3));
+				vo.setTaskname(rs.getString(4));
+				vo.setTeamname(rs.getString(5));
+				vo.setMoney(rs.getString(6));
+				vo.setYear(rs.getString(7));
+				vo.setSemester(rs.getString(8));
+				vo.setApproval(rs.getString(9));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list; 
+	}
+
+
+	
+	
+	
+	
+	
+	//AppBoard Insert
+	public int insertAppBoard(AppBoardVO vo){
+		//승인상태 0:대기 1:승인 -1:취소
+		String SQL = "INSERT INTO app_board VALUES ((Select max(no+1) from app_board a), ? , ?, ?, ?, ? , ? , ? , 0 );";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getTasktype());
+			pstmt.setString(3, vo.getTaskname());
+			pstmt.setString(4, vo.getTeamname());
+			pstmt.setString(5, vo.getMoney());
+			pstmt.setString(6, vo.getYear());
+			pstmt.setString(7, vo.getSemester());
+			int result = pstmt.executeUpdate();
+			System.out.println("인설트완료");
+			
+			return result;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	//AppBoard Insert
+	public int updateAppBoard(AppBoardVO vo,String no){
+		//승인상태 0:대기 1:승인 -1:취소
+		String SQL = "update app_board set tasktype = ?,taskname = ?,teamname = ?,money = ?,year = ? ,semester= ? where no = "+no+";";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, vo.getTasktype());
+			pstmt.setString(2, vo.getTaskname());
+			pstmt.setString(3, vo.getTeamname());
+			pstmt.setString(4, vo.getMoney());
+			pstmt.setString(5, vo.getYear());
+			pstmt.setString(6, vo.getSemester());
+			int result = pstmt.executeUpdate();
+			System.out.println("업데이트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	//AppBoard Insert
+	public int updateRsBoard(AppBoardVO vo,String no){
+		//승인상태 0:대기 1:승인 -1:취소
+		String SQL = "update rs_board set tasktype = ?,taskname = ?,teamname = ?,money = ?,year = ? ,semester= ? where no = "+no+";";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, vo.getTasktype());
+			pstmt.setString(2, vo.getTaskname());
+			pstmt.setString(3, vo.getTeamname());
+			pstmt.setString(4, vo.getMoney());
+			pstmt.setString(5, vo.getYear());
+			pstmt.setString(6, vo.getSemester());
+			int result = pstmt.executeUpdate();
+			System.out.println("업데이트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	//RsBoard Insert
+	public int insertRsBoard(AppBoardVO vo){
+		//승인상태 0:대기 1:승인 -1:취소
+		String SQL = "INSERT INTO rs_board VALUES ((Select max(no+1) from rs_board a), ? , ?, ?, ?, ? , ? , ? , 0 );";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getTasktype());
+			pstmt.setString(3, vo.getTaskname());
+			pstmt.setString(4, vo.getTeamname());
+			pstmt.setString(5, vo.getMoney());
+			pstmt.setString(6, vo.getYear());
+			pstmt.setString(7, vo.getSemester());
+			int result = pstmt.executeUpdate();
+			System.out.println("rsboard인설트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	public int insertAppBoardTeam(AppBoardTeamVO teamvo){
+
+		String SQL = "insert INTO app_board_team values((select max(no+1) from app_board_team a),?,?,?,?,?,?,(select max(no) from app_board));";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, teamvo.getDepartment());
+			pstmt.setString(2, teamvo.getClassid());
+			pstmt.setString(3, teamvo.getGrade());
+			pstmt.setString(4, teamvo.getName());
+			pstmt.setString(5, teamvo.getPhone());
+			pstmt.setString(6, teamvo.getEmail());
+
+			int result = pstmt.executeUpdate();
+			System.out.println("team 인설트완료");
+			
+			return result;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	public int deleteAppBoardTeam(String no){
+		
+		String SQL = "delete from app_board_team where boardno ="+no+" ;";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("team 딜리트");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	public int deleteRsBoardTeam(String no){
+		
+		String SQL = "delete from rs_board_team where boardno ="+no+" ;";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("team 딜리트");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	public int insertRsBoardTeam(AppBoardTeamVO teamvo){
+		
+		String SQL = "insert INTO rs_board_team values((select max(no+1) from rs_board_team a),?,?,?,?,?,?,(select max(no) from rs_board));";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, teamvo.getDepartment());
+			pstmt.setString(2, teamvo.getClassid());
+			pstmt.setString(3, teamvo.getGrade());
+			pstmt.setString(4, teamvo.getName());
+			pstmt.setString(5, teamvo.getPhone());
+			pstmt.setString(6, teamvo.getEmail());
+			
+			int result = pstmt.executeUpdate();
+			System.out.println("rsteam 인설트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	public int insertAppBoardCompany(AppBoardCompanyVO companyVo){
+		String SQL = "insert INTO app_board_company values((select max(no+1) from app_board_company a),?,?,?,?,?,?,?,(Select max(no) from app_board));";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, companyVo.getType());
+			pstmt.setString(2,companyVo.getCompany());
+			pstmt.setString(3, companyVo.getCeo());
+			pstmt.setString(4, companyVo.getLicense());
+			pstmt.setString(5, companyVo.getBusiness());
+			pstmt.setString(6, companyVo.getPostcode());
+			pstmt.setString(7, companyVo.getAddress());
+
+			int result = pstmt.executeUpdate();
+			System.out.println("company 인설트완료");
+			
+			return result;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+	
+	public int deleteAppBoardCompany(String no){
+		String SQL = "delete from app_board_company where boardno = "+no;
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("company 딜리트");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+	
+	public int deleteRsBoardCompany(String no){
+		String SQL = "delete from rs_board_company where boardno = "+no;
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("company 딜리트");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+	
+	public int insertRsBoardCompany(AppBoardCompanyVO companyVo){
+		String SQL = "insert INTO rs_board_company values((select max(no+1) from rs_board_company a),?,?,?,?,?,?,?,(Select max(no) from rs_board));";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, companyVo.getType());
+			pstmt.setString(2,companyVo.getCompany());
+			pstmt.setString(3, companyVo.getCeo());
+			pstmt.setString(4, companyVo.getLicense());
+			pstmt.setString(5, companyVo.getBusiness());
+			pstmt.setString(6, companyVo.getPostcode());
+			pstmt.setString(7, companyVo.getAddress());
+			
+			int result = pstmt.executeUpdate();
+			System.out.println("rs company 인설트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+
+	public int insertAppBoardFile(String fileName){
+		String SQL = "insert INTO app_board_file values((select max(no+1) from app_board_file a),?,(Select max(no) from app_board));";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,fileName);
+
+			int result = pstmt.executeUpdate();
+			System.out.println("file 인설트완료");
+			
+			return result;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+	
+	public int deleteAppBoardFile(String no){
+		String SQL = "delete from app_board_file where boardno = " + Integer.parseInt(no);
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("file 딜리트완료");
+			
+			return result;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+	
+	public int deleteRsBoardFile(String no){
+		String SQL = "delete from rs_board_file where boardno = " + Integer.parseInt(no);
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("file 딜리트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+	
+	public int insertRsBoardFile(String fileName){
+		String SQL = "insert INTO rs_board_file values((select max(no+1) from rs_board_file a),?,(Select max(no) from rs_board));";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,fileName);
+			
+			int result = pstmt.executeUpdate();
+			System.out.println("file 인설트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+
+	
+	public AppBoardVO getSelectAppBoardVO(String no){
+		String SQL = "SELECT * FROM app_board where no = ?";
+		AppBoardVO vo = new AppBoardVO();
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				
+				//map.put(rs.getColumnName(1), rs.getString(1));
+				
+				vo.setNo(rs.getInt(1));
+				vo.setName(rs.getString(2));
+				vo.setTasktype(rs.getString(3));
+				vo.setTaskname(rs.getString(4));
+				vo.setTeamname(rs.getString(5));
+				vo.setMoney(rs.getString(6));
+				vo.setYear(rs.getString(7));
+				vo.setSemester(rs.getString(8));
+				vo.setApproval(rs.getString(9));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
+	
+	public AppBoardVO getSelectRsBoardVO(String no){
+		String SQL = "SELECT * FROM rs_board where no = ?";
+		AppBoardVO vo = new AppBoardVO();
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				
+				//map.put(rs.getColumnName(1), rs.getString(1));
+				
+				vo.setNo(rs.getInt(1));
+				vo.setName(rs.getString(2));
+				vo.setTasktype(rs.getString(3));
+				vo.setTaskname(rs.getString(4));
+				vo.setTeamname(rs.getString(5));
+				vo.setMoney(rs.getString(6));
+				vo.setYear(rs.getString(7));
+				vo.setSemester(rs.getString(8));
+				vo.setApproval(rs.getString(9));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
+	
+	
+	
+	public List<AppBoardTeamVO> getSelectAppBoardTeamVO(String no){
+
+		String SQL = "SELECT * FROM app_board_team where boardno = ?";
+		List<AppBoardTeamVO> list = new ArrayList<AppBoardTeamVO>();
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				AppBoardTeamVO vo = new AppBoardTeamVO();
+				
+				vo.setNo(rs.getInt(1));
+				vo.setDepartment(rs.getString(2));
+				vo.setClassid(rs.getString(3));
+				vo.setGrade(rs.getString(4));
+				vo.setName(rs.getString(5));
+				vo.setPhone(rs.getString(6));
+				vo.setEmail(rs.getString(7));
+				vo.setBoardno(rs.getInt(8));
+				
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<AppBoardTeamVO> getSelectRsBoardTeamVO(String no){
+		
+		String SQL = "SELECT * FROM rs_board_team where boardno = ?";
+		List<AppBoardTeamVO> list = new ArrayList<AppBoardTeamVO>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				AppBoardTeamVO vo = new AppBoardTeamVO();
+				
+				vo.setNo(rs.getInt(1));
+				vo.setDepartment(rs.getString(2));
+				vo.setClassid(rs.getString(3));
+				vo.setGrade(rs.getString(4));
+				vo.setName(rs.getString(5));
+				vo.setPhone(rs.getString(6));
+				vo.setEmail(rs.getString(7));
+				vo.setBoardno(rs.getInt(8));
+				
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	
+	public List<String> getSelectFileDownload(String no){
+		
+		String SQL = "SELECT * FROM app_board_file where boardno = ?";
+		List<String> list = new ArrayList<String>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				String vo = new String();
+				
+				vo = rs.getString(2);
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<String> getSelectFileDownloadRs(String no){
+		
+		String SQL = "SELECT * FROM rs_board_file where boardno = ?";
+		List<String> list = new ArrayList<String>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				String vo = new String();
+				
+				vo = rs.getString(2);
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public AppBoardCompanyVO getSelectAppBoardCompanyVO(String no){
+
+		String SQL = "SELECT * FROM app_board_company where boardno = ?";
+		AppBoardCompanyVO vo = new AppBoardCompanyVO();
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				
+				vo.setNo(rs.getInt(1));
+				vo.setType(rs.getString(2));
+				vo.setCompany(rs.getString(3));
+				vo.setCeo(rs.getString(4));
+				vo.setLicense(rs.getString(5));
+				vo.setBusiness(rs.getString(6));
+				vo.setPostcode(rs.getString(7));
+				vo.setAddress(rs.getString(8));
+				vo.setBoardno(rs.getInt(9));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
+	public AppBoardCompanyVO getSelectAppRsCompanyVO(String no){
+		
+		String SQL = "SELECT * FROM rs_board_company where boardno = ?";
+		AppBoardCompanyVO vo = new AppBoardCompanyVO();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				
+				vo.setNo(rs.getInt(1));
+				vo.setType(rs.getString(2));
+				vo.setCompany(rs.getString(3));
+				vo.setCeo(rs.getString(4));
+				vo.setLicense(rs.getString(5));
+				vo.setBusiness(rs.getString(6));
+				vo.setPostcode(rs.getString(7));
+				vo.setAddress(rs.getString(8));
+				vo.setBoardno(rs.getInt(9));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
+
+}
+
+
+
+ 
+
+
