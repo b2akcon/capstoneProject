@@ -1,0 +1,70 @@
+package com.capstone.vo;
+
+public class AppBoardVO {
+	int no;
+	String name;
+	String tasktype;
+	String taskname;
+	String teamname;
+	String money;
+	String year;
+	String semester;
+	String approval;
+	
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getTasktype() {
+		return tasktype;
+	}
+	public void setTasktype(String tasktype) {
+		this.tasktype = tasktype;
+	}
+	public String getTaskname() {
+		return taskname;
+	}
+	public void setTaskname(String taskname) {
+		this.taskname = taskname;
+	}
+	public String getTeamname() {
+		return teamname;
+	}
+	public void setTeamname(String teamname) {
+		this.teamname = teamname;
+	}
+	public String getMoney() {
+		return money;
+	}
+	public void setMoney(String money) {
+		this.money = money;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getSemester() {
+		return semester;
+	}
+	public void setSemester(String semester) {
+		this.semester = semester;
+	}
+	public String getApproval() {
+		return approval;
+	}
+	public void setApproval(String approval) {
+		this.approval = approval;
+	}
+	
+	
+}
