@@ -1,0 +1,127 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+     <%@include file="template/capstone_session.jsp"%>
+     <!-- 설문조사 작성(학생)-->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>선문대학교 캡스톤디자인</title>
+
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<link rel="stylesheet" href="css/skel.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/appwrite.css" />
+			
+	</head>
+	<body class="left-sidebar">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+
+		<!-- navigation -->
+			<%@include file="template/capstone_header.jsp"%>
+
+		<!-- Main -->
+			<div id="main" class="wrapper style1">
+				<div class="container">
+					<div class="row">
+					
+						<!-- Sidebar -->
+							<%@include file="template/capstone_sidebar2.jsp"%>
+
+						
+						<!-- Content -->
+						<div id="content" class="8u skel-cell-important">
+							<section>
+								<header class="major">
+									<h2>설문조사</h2>
+								</header>
+								<form name="frm" id="reg_frm" action="capstone_survey_write_check.jsp" enctype="Multipart/form-data" method="post">
+								<!-- 유형 입력 폼 테이블-->
+								<table class="table table-bordered">
+									<caption class="cap">유형</caption>
+									<tr>
+										<td>	
+												<label for="name"> 작성자 </label><span style="color:red;"> * </span> 
+												<input type="text" id="name" name="id" value="<%= session.getAttribute("name")%>"readonly style="background-color: #cccccc;"> <br>		 
+					
+												<label for="name"> 년도 </label><span style="color:red;"> * </span>
+												<select id="name" name="year">
+													<c:forEach var="item" begin="1990" end="2025" step="1">
+														<option>${item}</option>
+													</c:forEach>
+												</select>
+												
+												<label for="name"> 학기 </label><span style="color:red;"> * </span> 
+												<select id="name" name="semester">
+													<option>1</option>
+													<option>2</option>
+												</select>
+<!-- 											<input type="number" id="name" name="year" placeholder=" ex ) 2018"> <br>		 
+					
+												<input type="number" id="name" name="semester" placeholder=" ex ) 1"> <br> -->		 
+										</td>
+									</tr>
+								</table>
+								<br><br><br>
+
+								<!-- 팀원 입력 폼 테이블-->
+								<table class="table table-bordered">
+									<caption class="cap">글</caption>
+									<tr>
+										<td style="text-align: center;">
+											<label for="name">글제목</label>
+											<span style="color:red;"> * </span>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" id="name" name="title"> <br></td>
+									</tr>
+									<tr>
+										<td style="text-align: center;">
+											<label for="name">글 내용</label>
+											<span style="color:red;"> * </span> 
+										</td>
+									</tr>
+									<tr>
+										<td><textarea rows="8" cols="85" id="name" name="content"></textarea> <br></td>
+									</tr>
+								</table>
+								<!-- 파일 첨부 -->
+									<br>
+									<div class="filediv" id="filediv">
+										<label for="InputSubject1">파일첨부</label>
+										<span class="fileAdd" onclick="filediv()">추가</span>
+										<div class="fileattachment">
+											<input type="file" id="userfile" class="form-control" name="file">
+										</div>
+									</div>										
+									<button type="submit" id="completed_btn" class="btn btn-primary pull-right" name="completed_btn">작성 완료</button>
+								</form>
+								
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		<!-- Footer -->
+			<%@include file="template/capstone_footer.jsp"%>
+	</body>
+	<script>
+		var filenumber = 0;
+		function filediv(){
+			filenumber++;
+			var innerhtml = '<input type="file" id="userfile" class="form-control" name="file'+filenumber+'">';
+			$('.fileattachment').append(innerhtml);
+		}
+	</script>
+</html>
