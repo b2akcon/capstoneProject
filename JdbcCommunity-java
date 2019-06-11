@@ -1,0 +1,177 @@
+package com.capstone.database;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.capstone.vo.CalculateFileVO;
+import com.capstone.vo.CalculateVO;
+import com.capstone.vo.CommunityFileVO;
+import com.capstone.vo.CommunityVO;
+
+public class JdbcCommunity {
+	private Connection conn; // connection:db에접근하게 해주는 객체
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+	
+	public JdbcCommunity() {
+		try {
+			String dbURL = "jdbc:mysql://localhost:3306/capstone?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&mysqlEncoding=utf8"; // localhost:3306 포트는 컴퓨터설치된 mysql주소
+			String dbID = "yong";
+			String dbPassword = "yong";
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
+		} catch (Exception e) {
+			e.printStackTrace(); // 오류가 무엇인지 출력
+		}
+	}
+	
+
+	public List<CommunityVO> getSelectBoard(String board){ 
+		
+		String SQL = "SELECT * FROM "+board+"_board order by ddate desc";
+		List<CommunityVO> list = new ArrayList<CommunityVO>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				CommunityVO vo = new CommunityVO();
+				vo.setNo(rs.getInt(1));
+				vo.setTitle(rs.getString(2));
+				vo.setName(rs.getString(3));
+				vo.setddate(rs.getString(4));
+				vo.setContent(rs.getString(5));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list; 
+	}
+	
+	
+	
+	public CommunityVO getSelectBoardVo(String board,String no){ 
+		
+		String SQL = "SELECT * FROM "+board+"_board where no ="+no+" order by ddate desc";
+		CommunityVO vo = new CommunityVO();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				vo.setNo(rs.getInt(1));
+				vo.setTitle(rs.getString(2));
+				vo.setName(rs.getString(3));
+				vo.setddate(rs.getString(4));
+				vo.setContent(rs.getString(5));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo; 
+	}
+	
+	//Board Insert
+	public int inserCommunityBoard(CommunityVO vo,String board){
+		String SQL = "INSERT INTO "+board+"_board VALUES ((Select max(no+1) from "+board+"_board a),?, ?, (select DATE_FORMAT(now(), '%Y-%m-%d')), ? );";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getName());
+			pstmt.setString(3, vo.getContent());
+			int result = pstmt.executeUpdate();
+			System.out.println("CommunityBoard인설트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	//Board delete
+	public int deleteCommunityBoard(String no,String board){
+		String SQL = "delete from "+board+"_board where no = "+no;
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("CommunityBoard딜리트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	//file delete
+	public int deleteSurveyBoardFile(String no,String board){
+		String SQL = "delete from "+board+"_board_file where boardno ="+no+" ;";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			int result = pstmt.executeUpdate();
+			System.out.println("file com 딜리트");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+		
+	}
+	
+	
+	
+	public int insertSurveyBoardFile(CommunityFileVO vo,String board){
+		String SQL = "insert INTO "+board+"_board_file values((select max(no+1) from "+board+"_board_file a),?,(Select max(no) from "+board+"_board));";
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,vo.getFile());
+			
+			int result = pstmt.executeUpdate();
+			System.out.println("file 인설트완료");
+			
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -2; // 데이터베이스 오류를 의미
+		}
+	}
+	
+	
+	public List<String>getSelectFileDownloadCommunity(String no,String board){
+		String SQL = "select * from "+board+"_board_file where boardno = ?";
+		List<String> list = new ArrayList<String>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,no);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				String vo = new String();
+				vo = rs.getString(2);
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+}
