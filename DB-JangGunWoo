@@ -1,0 +1,534 @@
+-- MySQL dump 10.13  Distrib 8.0.16, for Win64 (x86_64)
+--
+-- Host: localhost    Database: capstone
+-- ------------------------------------------------------
+-- Server version	8.0.16
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8mb4 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `app_board`
+--
+
+DROP TABLE IF EXISTS `app_board`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `app_board` (
+  `no` int(11) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `tasktype` varchar(30) DEFAULT NULL,
+  `taskname` varchar(30) DEFAULT NULL,
+  `teamname` varchar(30) DEFAULT NULL,
+  `money` varchar(30) DEFAULT NULL,
+  `year` varchar(10) DEFAULT NULL,
+  `semester` varchar(20) DEFAULT NULL,
+  `approval` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_board`
+--
+
+LOCK TABLES `app_board` WRITE;
+/*!40000 ALTER TABLE `app_board` DISABLE KEYS */;
+INSERT INTO `app_board` VALUES (2,'학생','123123123','123123123','123123123','12312312','2020','1','0');
+/*!40000 ALTER TABLE `app_board` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_board_company`
+--
+
+DROP TABLE IF EXISTS `app_board_company`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `app_board_company` (
+  `no` int(11) DEFAULT NULL,
+  `type` varchar(30) DEFAULT NULL,
+  `company` varchar(30) DEFAULT NULL,
+  `ceo` varchar(20) DEFAULT NULL,
+  `license` varchar(40) DEFAULT NULL,
+  `Business` varchar(40) DEFAULT NULL,
+  `postcode` varchar(30) DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
+  `boardno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_board_company`
+--
+
+LOCK TABLES `app_board_company` WRITE;
+/*!40000 ALTER TABLE `app_board_company` DISABLE KEYS */;
+INSERT INTO `app_board_company` VALUES (NULL,'134','sfgasfg','asfga','sfgasfg','fasgasf','gfasg','134',2);
+/*!40000 ALTER TABLE `app_board_company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_board_file`
+--
+
+DROP TABLE IF EXISTS `app_board_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `app_board_file` (
+  `no` varchar(6) DEFAULT NULL,
+  `file` varchar(40) DEFAULT NULL,
+  `boardno` varchar(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_board_file`
+--
+
+LOCK TABLES `app_board_file` WRITE;
+/*!40000 ALTER TABLE `app_board_file` DISABLE KEYS */;
+INSERT INTO `app_board_file` VALUES (NULL,'WdfCoInstaller010114.dll','2'),(NULL,'WdfCoInstaller010115.dll','2'),(NULL,'HECIx645.sys','2');
+/*!40000 ALTER TABLE `app_board_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_board_team`
+--
+
+DROP TABLE IF EXISTS `app_board_team`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `app_board_team` (
+  `no` int(11) DEFAULT NULL,
+  `department` varchar(16) DEFAULT NULL,
+  `classid` varchar(10) DEFAULT NULL,
+  `grade` varchar(6) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `boardno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_board_team`
+--
+
+LOCK TABLES `app_board_team` WRITE;
+/*!40000 ALTER TABLE `app_board_team` DISABLE KEYS */;
+INSERT INTO `app_board_team` VALUES (NULL,'134','134','gsa','gasg','afsg','asfgas',2),(NULL,'adfra','fadf','dafdaf','adfadf','adf','adf',2);
+/*!40000 ALTER TABLE `app_board_team` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `calculate_board`
+--
+
+DROP TABLE IF EXISTS `calculate_board`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `calculate_board` (
+  `no` int(11) DEFAULT NULL,
+  `year` varchar(10) DEFAULT NULL,
+  `semester` varchar(10) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  `title` varchar(30) DEFAULT NULL,
+  `content` varchar(200) DEFAULT NULL,
+  `approval` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `calculate_board`
+--
+
+LOCK TABLES `calculate_board` WRITE;
+/*!40000 ALTER TABLE `calculate_board` DISABLE KEYS */;
+INSERT INTO `calculate_board` VALUES (1,'2019','1','홍길청','제목','내용','-1'),(3,'2019','1','학생','결과보고서입니다','이러다미쳐내가 여리여리 착하던 그런내가 너떄뭉네 독한내가 나도모르게 나도그만 이제와 또다시내가 내용','1'),(5,'1990','1','학생','글제목','글내용','0'),(6,'2019','1','학생','파일첵첵첵키라웃','파일첵첵첵키라웃','1'),(7,'1990','1','학생','asdasd','asdasd','0'),(8,'2019','2','홍길자','글제목제목제목','내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용','0'),(9,'1990','2','학생','asdfasdfs','dafasdfasdfafsdf','0'),(10,'1990','2','학생','asdfasdfs','dafasdfasdfafsdf','0');
+/*!40000 ALTER TABLE `calculate_board` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `calculate_board_file`
+--
+
+DROP TABLE IF EXISTS `calculate_board_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `calculate_board_file` (
+  `no` int(11) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `file` varchar(30) DEFAULT NULL,
+  `boardno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `calculate_board_file`
+--
+
+LOCK TABLES `calculate_board_file` WRITE;
+/*!40000 ALTER TABLE `calculate_board_file` DISABLE KEYS */;
+INSERT INTO `calculate_board_file` VALUES (2,'2-2','ChartRes.FAR',5),(3,'2-1','ChartRes.cht',5),(4,'3-1','CertIssue1.ini',5),(5,'1-1','cef_200_percent.pak',5),(6,'2-3','CertIssue.ini',5),(7,'4-1','CatalogRes.ilk',6),(8,'6-3','dx9pixo.dll',6),(9,'1-3','CatalogRes.dll',6),(10,'1-1','ChartRes1.cht',6),(11,'3-3','ChartRes.ptb',6),(12,'3-2','ChartRes1.spa',6),(13,'5-3','ChartRes.ENG',6),(14,'7-3','ChartRes.deu',6),(15,'2-3','ChartRes.spa',6),(16,'2-1','ChartRes1.FAR',6),(17,'2-2','TeeDriverW8x64.sys',7),(18,'1-1','HECIx64.sys',7),(19,'6-2','TeeDriverx64.sys',7),(20,'3-3','TeeDriverW8x641.sys',8),(21,'3-2','WdfCoInstaller01011.dll',8),(22,'6-2','TeeDriverW8x642.sys',8),(23,'1-1','WdfCoInstaller010111.dll',9);
+/*!40000 ALTER TABLE `calculate_board_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `document_board`
+--
+
+DROP TABLE IF EXISTS `document_board`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `document_board` (
+  `no` int(11) DEFAULT NULL,
+  `title` varchar(30) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  `ddate` varchar(30) DEFAULT NULL,
+  `content` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `document_board`
+--
+
+LOCK TABLES `document_board` WRITE;
+/*!40000 ALTER TABLE `document_board` DISABLE KEYS */;
+INSERT INTO `document_board` VALUES (2,'양식문서','작성자','날짜','내용'),(3,'양식서류22','교수','2019-06-11','양식서류22');
+/*!40000 ALTER TABLE `document_board` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `document_board_file`
+--
+
+DROP TABLE IF EXISTS `document_board_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `document_board_file` (
+  `no` int(11) DEFAULT NULL,
+  `file` varchar(30) DEFAULT NULL,
+  `boardno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `document_board_file`
+--
+
+LOCK TABLES `document_board_file` WRITE;
+/*!40000 ALTER TABLE `document_board_file` DISABLE KEYS */;
+INSERT INTO `document_board_file` VALUES (2,'HECIx646.sys',3);
+/*!40000 ALTER TABLE `document_board_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `faq_board`
+--
+
+DROP TABLE IF EXISTS `faq_board`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `faq_board` (
+  `no` int(11) DEFAULT NULL,
+  `title` varchar(30) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  `ddate` varchar(30) DEFAULT NULL,
+  `content` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `faq_board`
+--
+
+LOCK TABLES `faq_board` WRITE;
+/*!40000 ALTER TABLE `faq_board` DISABLE KEYS */;
+INSERT INTO `faq_board` VALUES (1,'제목','작성자','날짜','내용'),(2,'faq','작성자','날짜','내용'),(3,'faq','작성자','2019-06-10','내용'),(6,'제목제목123123','교수','2019-06-11','123123123내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용'),(7,'123123123','교수','2019-06-11','123123123');
+/*!40000 ALTER TABLE `faq_board` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `faq_board_file`
+--
+
+DROP TABLE IF EXISTS `faq_board_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `faq_board_file` (
+  `no` int(11) DEFAULT NULL,
+  `file` varchar(30) DEFAULT NULL,
+  `boardno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `faq_board_file`
+--
+
+LOCK TABLES `faq_board_file` WRITE;
+/*!40000 ALTER TABLE `faq_board_file` DISABLE KEYS */;
+INSERT INTO `faq_board_file` VALUES (1,'파일',1),(6,'HECIx647.sys',6),(7,'TeeDriverx646.sys',7);
+/*!40000 ALTER TABLE `faq_board_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notice_board`
+--
+
+DROP TABLE IF EXISTS `notice_board`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `notice_board` (
+  `no` int(11) DEFAULT NULL,
+  `title` varchar(30) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  `ddate` varchar(30) DEFAULT NULL,
+  `content` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notice_board`
+--
+
+LOCK TABLES `notice_board` WRITE;
+/*!40000 ALTER TABLE `notice_board` DISABLE KEYS */;
+INSERT INTO `notice_board` VALUES (2,'공지','작성자','날짜','내용'),(5,'12341234','교수','2019-06-11','12341234'),(6,'12451245','교수','2019-06-11','12451245'),(7,'123123','교수','2019-06-11','123123123'),(8,'공지사항을남겨','교수','2019-06-11','글내용입니다.글내용입니다.글내용입니다.글내용입니다.글내용입니다.글내용입니다.글내용입니다.글내용입니다.글내용입니다.글내용입니다.글내용입니다.');
+/*!40000 ALTER TABLE `notice_board` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notice_board_file`
+--
+
+DROP TABLE IF EXISTS `notice_board_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `notice_board_file` (
+  `no` int(11) DEFAULT NULL,
+  `file` varchar(30) DEFAULT NULL,
+  `boardno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notice_board_file`
+--
+
+LOCK TABLES `notice_board_file` WRITE;
+/*!40000 ALTER TABLE `notice_board_file` DISABLE KEYS */;
+INSERT INTO `notice_board_file` VALUES (6,'WdfCoInstaller01011.dll',5),(7,'HECIx644.sys',6),(8,'TeeDriverx645.sys',7),(9,'TeeDriverW8x644.sys',8),(10,'HECIx645.sys',8);
+/*!40000 ALTER TABLE `notice_board_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rs_board`
+--
+
+DROP TABLE IF EXISTS `rs_board`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `rs_board` (
+  `no` int(11) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `tasktype` varchar(30) DEFAULT NULL,
+  `taskname` varchar(30) DEFAULT NULL,
+  `teamname` varchar(30) DEFAULT NULL,
+  `money` varchar(30) DEFAULT NULL,
+  `year` varchar(10) DEFAULT NULL,
+  `semester` varchar(20) DEFAULT NULL,
+  `approval` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rs_board`
+--
+
+LOCK TABLES `rs_board` WRITE;
+/*!40000 ALTER TABLE `rs_board` DISABLE KEYS */;
+INSERT INTO `rs_board` VALUES (2,'학생','일반형','홈페이지','폴리팀','99999999','2018','3','0'),(3,'학생','실기형','과제형','팀형','지원금액','2019','3','0'),(4,'학생','과제유형','과제명','팀명','지원금','123','123','0'),(5,'??','asd','','','','','','0'),(6,'??','????','???','??','???','2018','1','0'),(7,'학생','과제유형','과제명','팀명','지원금','1213','1','0'),(8,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0'),(9,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0'),(10,'학생','abcd','abcd','abcd','abcd','2313','123123','0'),(11,'학생','dasfsadfasd','fasdfsadf','asdfasdfa','sdfasdf','1324','123','0'),(12,'학생','1451245','12451245','12451245','12451245','1245','1245','0'),(13,'학생','151245','12451245','1425124','51245','1245124','512451245','0'),(14,'학생','sadsadf','asdf','asdf','asdf','3242','4234234','0'),(15,'학생','asdf','asdf','asdf','asdf','324','234','0'),(16,'학생','asdasd','asdasd','asdasd','asdasd','13241234','124124','0'),(17,'학생','결과보고서체크','결과보고서체크','결과보고서체크','23123213','2019','1','1'),(18,'학생','결과보고서체크','결과보고서체크','결과보고서체크','23123213','2019','1','-1'),(19,'홍길자','asdf','dsafdsaf','safsad','fsadf','2019','1','1'),(20,'학생','','','','','1990','1','0'),(21,'학생','파일파일','asfg','asfg','asfg','1990','1','0'),(22,'학생','1234','파일이라하옴','파일이라하옴','파일이라하옴','2019','1','-1'),(23,'학생','파일3','파일3','파일3','파일3','2019','1','0'),(24,'학생','파일4','파일4','파일4','파일4','2019','1','0'),(25,'홍길자','multipartRequest','multipartRequest','multipartRequest','multipartRequest','1990','1','0'),(26,'홍길자','getFilesystemName','getFilesystemName','getFilesystemName','getFilesystemName','2017','1','1'),(27,'홍길자','asdf','awsdf','asdf','sadf','1990','1','0'),(28,'홍길자','afdsg','dsfg','safgd','sdfg','1990','1','0'),(29,'홍길자','adfg','fgfdag','gda','gfdafgdafg','1990','1','0'),(30,'홍길자','adg','dafgfda','gffdagfda','gdagf','1990','1','0'),(31,'학생',NULL,NULL,NULL,NULL,'1990','1','0');
+/*!40000 ALTER TABLE `rs_board` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rs_board_company`
+--
+
+DROP TABLE IF EXISTS `rs_board_company`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `rs_board_company` (
+  `no` int(11) DEFAULT NULL,
+  `type` varchar(30) DEFAULT NULL,
+  `company` varchar(30) DEFAULT NULL,
+  `ceo` varchar(20) DEFAULT NULL,
+  `license` varchar(40) DEFAULT NULL,
+  `Business` varchar(40) DEFAULT NULL,
+  `postcode` varchar(30) DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
+  `boardno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rs_board_company`
+--
+
+LOCK TABLES `rs_board_company` WRITE;
+/*!40000 ALTER TABLE `rs_board_company` DISABLE KEYS */;
+INSERT INTO `rs_board_company` VALUES (2,'지역인재','삼송','이건희','1321-1231-123123','폐기물처리','306912','서울 광명시 석기군 석기시대 청동기 방ㅁㅇ',2),(3,'기업','뭘까?','이건희','1112','폐기물','30291','ㅈㅇㄴㄹㄶㅁㅁㄹㅋ홀',3),(4,'형태','기관명','태표자','사업자번호','업종','우편번호','주소',4),(5,'','','','','','','',5),(6,'','','','','','','',6),(7,'','','','','','','',7),(8,'','','','','','','',10),(9,'asdf','asdf','asdf','asdfasdf','asdf','asdf','asdf',11),(10,'','','','','','','',12),(11,'','','','','','','',13),(12,'','','','','','','',14),(13,'','','','','','','',15),(14,'','','','','','','',16),(15,'결과보고서체크','결과보고서체크','결과보고서체크','결과보고서체크','결과보고서체크','결과보고서체크','결과보고서체크',17),(16,'결과보고서체크','결과보고서체크','결과보고서체크','결과보고서체크','결과보고서체크','결과보고서체크','결과보고서체크',18),(17,'','','','','','','',19),(18,'','','','','','','',20),(19,'','','','','','','',21),(21,'파일3','파일3','파일3','파일3','파일3','파일3','파일3',23),(22,'파일4','파일4','파일4','파일4','파일4','파일4','파일4',24),(23,'multipartRequest','multipartRequest','multipartRequest','multipartRequest','multipartRequest','multipartRequest','multipartRequest',25),(24,'getFilesystemName','getFilesystemName','getFilesystemName','getFilesystemName','getFilesystemName','getFilesystemName','getFilesystemName',26),(25,'safd','sadf','sadf','adsf','asf','asfds','asdf',27),(26,'','','','','','','',28),(27,'','','','','','','',29),(28,'','','','','','','',30),(29,'1234','1234','','1234','','1234','1234',31);
+/*!40000 ALTER TABLE `rs_board_company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rs_board_file`
+--
+
+DROP TABLE IF EXISTS `rs_board_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `rs_board_file` (
+  `no` varchar(6) DEFAULT NULL,
+  `file` varchar(40) DEFAULT NULL,
+  `boardno` varchar(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rs_board_file`
+--
+
+LOCK TABLES `rs_board_file` WRITE;
+/*!40000 ALTER TABLE `rs_board_file` DISABLE KEYS */;
+INSERT INTO `rs_board_file` VALUES ('1','CatalogRes.dll','17'),('1','ChartRes.enu','17'),('1','ChartRes.NLD','17'),('1','CatalogRes1.dll','18'),('1','ChartRes1.enu','18'),('1','ChartRes1.NLD','18'),('2','ChartRes2.enu','19'),('3',NULL,'23'),('4',NULL,'23'),('5','ChartRes.kor','23'),('6','cef.pak','23'),('7','d3dcompiler_43.dll','23'),('8',NULL,'24'),('9',NULL,'24'),('10','ChartRes1.kor','24'),('11','CatalogRes2.dll','24'),('12','ChartRes3.enu','24'),('13','CertIssue.ini','24'),('14','ChartRes.cht','28'),('15','ChartRes3.chs','30'),('16','d3dcompiler_431.dll','30'),('17','ChartRes4.chs','30');
+/*!40000 ALTER TABLE `rs_board_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rs_board_team`
+--
+
+DROP TABLE IF EXISTS `rs_board_team`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `rs_board_team` (
+  `no` int(11) DEFAULT NULL,
+  `department` varchar(16) DEFAULT NULL,
+  `classid` varchar(10) DEFAULT NULL,
+  `grade` varchar(6) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `boardno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rs_board_team`
+--
+
+LOCK TABLES `rs_board_team` WRITE;
+/*!40000 ALTER TABLE `rs_board_team` DISABLE KEYS */;
+INSERT INTO `rs_board_team` VALUES (11,'컴퓨터정보과','2019','3','홍길1','010999912312','dayda3@naver.com',2),(12,'컴퓨터정보과','2019','3','홍길12','010999912312','dayda3@naver.com',2),(13,'컴퓨터정보과','2019','3','홍길13','010999912312','dayda3@naver.com',2),(14,'컴퓨터정보과','2019','3','홍길14','010999912312','dayda3@naver.com',2),(15,'컴퓨터정보과','2019','3','홍길15','010999912312','dayda3@naver.com',2),(16,'컴퓨터정보과','2019','3','홍길16','010999912312','dayda3@naver.com',2),(17,'이쁜학과','2','3','없음','112','1@naver.com',3),(18,'이쁜학과','1','4','있음','119','2@naver.com',3),(19,'학과','학번','학년','성명','번호','이멜',4),(20,'','','','','','',5),(21,'','','','','','',6),(22,'','','','','','',7),(23,'','','','','','',10),(24,'asdf','asdf','asdf','asdf','asdf','asdf',11),(25,'','','','','','',12),(26,'','','','','','',13),(27,'','','','','','',14),(28,'','','','','','',15),(29,'','','','','','',16),(30,'결과보고서체크','결과보고서체크','1','결과보고서체크','결과보고서체크','결과보고서체크',18),(31,'결과보고서체크','결과보고서체크','2','결과보고서체크','결과보고서체크','결과보고서체크',18),(32,'결과보고서체크','결과보고서체크','4','결과보고서체크','결과보고서체크','결과보고서체크',18),(33,'결과보고서체크','결과보고서체크','3','결과보고서체크','결과보고서체크','결과보고서체크',18),(34,'결과보고서체크','결과보고서체크','5','결과보고서체크','결과보고서체크','결과보고서체크',18),(35,'','','','','','',19),(36,'','','','','','',20),(37,'','','','','','',21),(39,'파일3','파일3','파일3','파일3','파일3','파일3',23),(40,'파일4','파일4','파일4','파일4','파일4','파일4',24),(41,'multipartRequest','1','2','3','1','multipartRequest',25),(42,'sad','fsadf','asdf','sadf','sadf','asdf',27),(43,'','','','','','',28),(44,'','','','','','',29),(45,'','','','','','',30),(46,'1234','1234','1234','1234','1234','1234',31);
+/*!40000 ALTER TABLE `rs_board_team` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `survey_board`
+--
+
+DROP TABLE IF EXISTS `survey_board`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `survey_board` (
+  `no` int(11) DEFAULT NULL,
+  `year` varchar(10) DEFAULT NULL,
+  `semester` varchar(10) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  `title` varchar(30) DEFAULT NULL,
+  `content` varchar(200) DEFAULT NULL,
+  `approval` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `survey_board`
+--
+
+LOCK TABLES `survey_board` WRITE;
+/*!40000 ALTER TABLE `survey_board` DISABLE KEYS */;
+INSERT INTO `survey_board` VALUES (2,'2019','1','학생','하이','바이서베이','0'),(3,'1996','2','학생','314134','314134','0'),(4,'1998','1','학생','asdasdasd','asdasdasdasd','0');
+/*!40000 ALTER TABLE `survey_board` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `survey_board_file`
+--
+
+DROP TABLE IF EXISTS `survey_board_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `survey_board_file` (
+  `no` int(11) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `file` varchar(30) DEFAULT NULL,
+  `boardno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `survey_board_file`
+--
+
+LOCK TABLES `survey_board_file` WRITE;
+/*!40000 ALTER TABLE `survey_board_file` DISABLE KEYS */;
+INSERT INTO `survey_board_file` VALUES (2,'file','HECIx64.sys',2),(3,'file2','TeeDriverW8x64.sys',2),(4,'file1','TeeDriverx64.sys',2),(5,'file','TeeDriverx642.sys',3);
+/*!40000 ALTER TABLE `survey_board_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `user` (
+  `id` varchar(20) NOT NULL,
+  `pw` varchar(20) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `role` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES ('student','student','학생','2'),('teacher','teacher','교수','1'),('student2','student2','홍길동','2'),('student3','student3','홍길자','2'),('student3','student3','홍길자','2'),('student3','student3','홍길자','2'),('student3','student3','홍길자','2');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-06-11  3:52:44
